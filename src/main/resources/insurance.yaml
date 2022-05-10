@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  description: ''
+  version: 1.0.0
+  title: Swagger Insurance Policy
+paths:
+  /quote:
+    post:
+      summary: Create a policy quote
+      description: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '405':
+          description: Invalid input
+      requestBody:
+        description: Create a new quote
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+  /policy:
+    post:
+      summary: Create a policy
+      description: ''
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '405':
+          description: Invalid input
+      requestBody:
+        description: Create a new policy
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Policy'
+  /policy/{policyId}/endDate:
+    patch:
+      summary: Cancel policy
+      description: ''
+      parameters:
+        - name: policyId
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer         
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        '405':
+          description: Invalid input
+components:
+  schemas:
+    BusinessType:
+      type: string
+      enum:
+      - Professional
+      - Trade
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+        businessType:
+          $ref: '#/components/schemas/BusinessType'
+    Quote:
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/Category'
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          example: '2022-01-30'
+        username:
+          type: string
+        endDate:
+          type: string
+          format: date
+          description: End date
+          example: '2023-01-30'
+        amount:
+          type: number
+          format: double
+          description: Quote amount
+      required:
+      - startDate
+      - category
+    Policy:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          $ref: '#/components/schemas/Category'
+        startDate:
+          type: string
+          format: date
+          description: Start date
+          example: '2022-01-30'
+        username:
+          type: string
+        endDate:
+          type: string
+          format: date
+          description: End date
+          example: '2023-01-30'
+        amount:
+          type: number
+          format: double
+          description: amount
+          example: 10.00
+        autorenew:
+          type: boolean
+          example: true          
+      required:
+      - startDate
+      - endDate
+      - category
+      - amount
